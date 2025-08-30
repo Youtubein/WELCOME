@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Shatter/Fall Effects with Transitions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .welcome-box {
+      width: 300px;
+      height: 150px;
+      background: linear-gradient(45deg, #FF0000, #FF8000, #FFFF00, #80FF00, #00FF00, #00FF80, #00FFFF, #0080FF, #8000FF, #FF00FF);
+      border-radius: 20px;
+      border: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 50px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: black;
+      text-shadow: 1px 1px 0 white;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      transition: width 2s ease-in, height 4s ease-out, transform 2s ease-in-out;
+      transition-delay: 0.5s;
+    }
+
+    .welcome-box:hover {
+      width: 350px;
+      height: 200px;
+      transform: scale(1.1); /* Zoom without rotate */
+    }
+
+    .welcome-box .animated-text {
+      position: relative;
+      transition: transform 2s ease-in-out; /* Sync text transition with box */
+    }
+
+    .welcome-box:hover .animated-text {
+      transform: scale(1.1); /* Text scales with box */
+    }
+
+    .welcome-box.effect-fall-over {
+      background: linear-gradient(45deg, #FF0000, #00FF00);
+    }
+
+    .welcome-box.effect-drape {
+      background: linear-gradient(45deg, #FF8000, #0080FF);
+    }
+
+    .welcome-box.effect-curtains {
+      background: linear-gradient(45deg, #FFFF00, #FF00FF);
+    }
+
+    .welcome-box.effect-wind {
+      background: linear-gradient(45deg, #80FF00, #8000FF);
+    }
+
+    .welcome-box.effect-prestige {
+      background: linear-gradient(45deg, #00FF00, #00FFFF);
+    }
+
+    .welcome-box.effect-fracture {
+      background: linear-gradient(45deg, #00FF80, #FF0000);
+    }
+
+    .welcome-box.effect-crush {
+      background: linear-gradient(45deg, #00FFFF, #FF8000);
+    }
+
+    .welcome-box.effect-peel-off {
+      background: linear-gradient(45deg, #0080FF, #FFFF00);
+    }
+
+    .welcome-box.effect-page-curl {
+      background: linear-gradient(45deg, #8000FF, #80FF00);
+    }
+
+    .welcome-box.effect-airplane {
+      background: linear-gradient(45deg, #FF00FF, #00FF00);
+    }
+
+    .welcome-box.effect-origami {
+      background: linear-gradient(45deg, #FF0000, #00FF80);
+    }
+
+    .welcome-box.effect-dissolve {
+      background: linear-gradient(45deg, #FF8000, #00FFFF);
+    }
+
+    .welcome-box.effect-checkerboard {
+      background: linear-gradient(45deg, #FFFF00, #0080FF);
+    }
+
+    .welcome-box.effect-blinds {
+      background: linear-gradient(45deg, #80FF00, #FF00FF);
+    }
+
+    .welcome-box.effect-clock {
+      background: linear-gradient(45deg, #00FF00, #8000FF);
+    }
+
+    .welcome-box.effect-ripple {
+      background: linear-gradient(45deg, #00FF80, #FF0000);
+    }
+
+    .welcome-box.effect-honeycomb {
+      background: linear-gradient(45deg, #00FFFF, #FF8000);
+    }
+
+    .welcome-box.effect-glitter {
+      background: linear-gradient(45deg, #0080FF, #FFFF00);
+    }
+
+    .welcome-box.effect-vortex {
+      background: linear-gradient(45deg, #8000FF, #80FF00);
+    }
+
+    .welcome-box.effect-shred {
+      background: linear-gradient(45deg, #FF00FF, #00FF00);
+    }
+
+    .welcome-box.effect-switch {
+      background: linear-gradient(45deg, #FF0000, #00FF80);
+    }
+
+    .welcome-box.effect-flip {
+      background: linear-gradient(45deg, #FF8000, #00FFFF);
+    }
+
+    .welcome-box.effect-gallery {
+      background: linear-gradient(45deg, #FFFF00, #0080FF);
+    }
+
+    .welcome-box.effect-cube {
+      background: linear-gradient(45deg, #80FF00, #FF00FF);
+    }
+
+    .welcome-box::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 400% 400%;
+      z-index: -1;
+      filter: blur(15px);
+      animation: colorCycle 8s linear infinite;
+      border-radius: 25px;
+    }
+
+    .fragment {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 400% 400%;
+      animation: colorCycle 8s linear infinite;
+      border-radius: 3px;
+      opacity: 1;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .letter-fragment {
+      position: absolute;
+      font-size: 20px;
+      color: white;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    @keyframes colorCycle {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fall {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--x, 0px), 100vh) rotate(var(--r, 360deg)); opacity: 0; }
+    }
+
+    @keyframes spiral {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--x, 0px), 100vh) rotate(var(--r, 720deg)); opacity: 0; }
+    }
+
+    @keyframes bounce {
+      0% { transform: translate(0, 0); opacity: 1; }
+      20% { transform: translate(var(--x, 0px), -50px); }
+      40% { transform: translate(var(--x, 0px), 20px); }
+      100% { transform: translate(var(--x, 0px), 100vh); opacity: 0; }
+    }
+
+    @keyframes wave {
+      0% { transform: translate(0, 0); opacity: 1; }
+      50% { transform: translate(var(--x, 0px), var(--y, -20px)); }
+      100% { transform: translate(var(--x, 0px), 100vh); opacity: 0; }
+    }
+
+    @keyframes explode {
+      0% { transform: translate(0, 0); opacity: 1; }
+      50% { transform: translate(var(--x, 0px), var(--y, 0px)); }
+      100% { transform: translate(var(--x, 0px), 100vh); opacity: 0; }
+    }
+
+    @keyframes fadeSpin {
+      0% { transform: rotate(0deg); opacity: 1; }
+      100% { transform: rotate(var(--r, 360deg)); opacity: 0; }
+    }
+
+    @keyframes gravity {
+      0% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(var(--x, 0px), 100vh); opacity: 0; }
+    }
+
+    @keyframes flip3D {
+      0% { transform: rotateX(0deg) rotateY(0deg); opacity: 1; }
+      100% { transform: rotateX(var(--rx, 360deg)) rotateY(var(--ry, 360deg)) translate(0, 100vh); opacity: 0; }
+    }
+
+    @keyframes trailShadow {
+      0% { transform: translate(0, 0); opacity: 1; box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+      100% { transform: translate(var(--x, 0px), 100vh); opacity: 0; box-shadow: 0 0 20px rgba(255, 255, 255, 0); }
+    }
+
+    @keyframes colorFade {
+      0% { opacity: 1; filter: brightness(1); }
+      100% { opacity: 0; filter: brightness(0); }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-box {
+        width: 250px;
+        height: 120px;
+        font-size: 40px;
+      }
+      .welcome-box:hover {
+        width: 300px;
+        height: 160px;
+      }
+      .fragment, .letter-fragment {
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .welcome-box {
+        width: 200px;
+        height: 100px;
+        font-size: 30px;
+      }
+      .welcome-box:hover {
+        width: 240px;
+        height: 130px;
+      }
+      .fragment, .letter-fragment {
+        width: 10px;
+        height: 10px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgAudio" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/31/audio_3f6b35294c.mp3?filename=space-ambient-112925.mp3" type="audio/mp3">
+    Your browser does not support audio.
+  </audio>
+
+  <div class="welcome-box" id="welcomeBox" role="button" aria-label="Animated Welcome Text">
+    <div class="animated-text">
+      WELCOME
+    </div>
+  </div>
+
+  <script>
+    const box = document.getElementById('welcomeBox');
+    const audio = document.getElementById('bgAudio');
+    let audioContext, analyser, dataArray;
+
+    // Initialize Web Audio API for audio-sync effect
+    function initAudioContext() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioContext.destination);
+      analyser.fftSize = 256;
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+    }
+
+    // Get audio beat intensity
+    function getAudioIntensity() {
+      analyser.getByteFrequencyData(dataArray);
+      return dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+    }
+
+    // Shuffle function
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Modular effect functions
+    const effects = {
+      pixelShatter: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-fall-over');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+            frag.style.animation = `fall 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      letterRain: () => {
+        const boxRect = box.getBoundingClientRect();
+        const letters = 'WELCOME'.split('');
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-drape');
+        letters.forEach((letter, i) => {
+          const span = box.querySelector('.animated-text');
+          const spanRect = span.getBoundingClientRect();
+          for (let j = 0; j < 5; j++) {
+            const frag = document.createElement('div');
+            frag.classList.add('letter-fragment');
+            frag.textContent = letter;
+            frag.style.left = (spanRect.left + Math.random() * spanRect.width / 7) + 'px'; // Adjusted for single text
+            frag.style.top = (spanRect.top + Math.random() * spanRect.height) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 360) + 'deg');
+            frag.style.animation = `fall 2s ease-in-out forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.5}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        });
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      gradientBurst: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 15;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-curtains');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+            frag.style.animation = `fall 1.5s ease forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            frag.style.filter = 'blur(2px)';
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      flip3D: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-wind');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--rx', (Math.random() * 720 - 360) + 'deg');
+            frag.style.setProperty('--ry', (Math.random() * 720 - 360) + 'deg');
+            frag.style.animation = `flip3D 1.8s ease-out forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.4}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 2000);
+      },
+
+      randomBounce: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-prestige');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.animation = `bounce 2s linear forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.5}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      spiralFall: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 15;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-fracture');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 1440 - 720) + 'deg');
+            frag.style.animation = `spiral 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.4}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      trailShadow: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-crush');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.animation = `trailShadow 1.5s ease-in forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      letterScatter: () => {
+        const boxRect = box.getBoundingClientRect();
+        const letters = 'WELCOME'.split('');
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-peel-off');
+        letters.forEach((letter, i) => {
+          const span = box.querySelector('.animated-text');
+          const spanRect = span.getBoundingClientRect();
+          const frag = document.createElement('div');
+          frag.classList.add('letter-fragment');
+          frag.textContent = letter;
+          frag.style.left = (spanRect.left + (spanRect.width / 7) * i) + 'px';
+          frag.style.top = spanRect.top + 'px';
+          frag.style.setProperty('--x', (Math.random() * 300 - 150) + 'px');
+          frag.style.setProperty('--y', (Math.random() * 300 - 150) + 'px');
+          frag.style.animation = `explode 2s ease-in-out forwards`;
+          frag.style.animationDelay = `${i * 0.1}s`;
+          document.body.appendChild(frag);
+          fragments.push(frag);
+        });
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      waveFall: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-page-curl');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
+            frag.style.setProperty('--y', Math.sin(x / 20) * 50 + 'px');
+            frag.style.animation = `wave 2s ease forwards`;
+            frag.style.animationDelay = `${(x + y) / 100}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      particleExplosion: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 10;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-airplane');
+        for (let i = 0; i < 200; i++) {
+          const frag = document.createElement('div');
+          frag.classList.add('fragment');
+          frag.style.width = fragmentSize + 'px';
+          frag.style.height = fragmentSize + 'px';
+          frag.style.left = (boxRect.left + Math.random() * boxRect.width) + 'px';
+          frag.style.top = (boxRect.top + Math.random() * boxRect.height) + 'px';
+          frag.style.setProperty('--x', (Math.random() * 400 - 200) + 'px');
+          frag.style.setProperty('--y', (Math.random() * 400 - 200) + 'px');
+          frag.style.animation = `explode 1.5s ease-out forwards`;
+          frag.style.animationDelay = `${Math.random() * 0.5}s`;
+          document.body.appendChild(frag);
+          fragments.push(frag);
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      colorFade: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-origami');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.animation = `colorFade 1.5s linear forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      directionalShatter: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-dissolve');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (x / boxRect.width - 0.5) * 300 + 'px');
+            frag.style.setProperty('--r', (Math.random() * 360) + 'deg');
+            frag.style.animation = `fall 1.5s ease-in forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      gravityPull: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-checkerboard');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
+            frag.style.animation = `gravity 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 2200);
+      },
+
+      fadeSpin: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-blinds');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+            frag.style.animation = `fadeSpin 1.5s ease-in-out forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      },
+
+      letterRainAudio: () => {
+        initAudioContext();
+        const boxRect = box.getBoundingClientRect();
+        const letters = 'WELCOME'.split('');
+        const fragments = [];
+        audio.play();
+        box.style.opacity = 0;
+        box.classList.add('effect-clock');
+        letters.forEach((letter, i) => {
+          const span = box.querySelector('.animated-text');
+          const spanRect = span.getBoundingClientRect();
+          for (let j = 0; j < 5; j++) {
+            const frag = document.createElement('div');
+            frag.classList.add('letter-fragment');
+            frag.textContent = letter;
+            frag.style.left = (spanRect.left + Math.random() * spanRect.width / 7) + 'px';
+            frag.style.top = (spanRect.top + Math.random() * spanRect.height) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 100 - 50) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 360) + 'deg');
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        });
+        function animate() {
+          const intensity = getAudioIntensity();
+          fragments.forEach((frag, idx) => {
+            if (!frag.style.animation) {
+              const delay = intensity > 50 ? Math.random() * 0.2 : Math.random() * 0.5;
+              frag.style.animation = `fall ${1.5 + intensity / 100}s ease-in-out forwards`;
+              frag.style.animationDelay = `${delay}s`;
+            }
+          });
+          if (fragments.some(frag => !frag.style.animation)) {
+            requestAnimationFrame(animate);
+          } else {
+            setTimeout(() => window.location.href = 'next.html', 2000);
+          }
+        }
+        requestAnimationFrame(animate);
+      },
+
+      original: () => {
+        const boxRect = box.getBoundingClientRect();
+        const fragmentSize = 20;
+        const fragments = [];
+        audio.pause();
+        box.style.opacity = 0;
+        box.classList.add('effect-ripple');
+        for (let y = 0; y < boxRect.height; y += fragmentSize) {
+          for (let x = 0; x < boxRect.width; x += fragmentSize) {
+            const frag = document.createElement('div');
+            frag.classList.add('fragment');
+            frag.style.left = (boxRect.left + x) + 'px';
+            frag.style.top = (boxRect.top + y) + 'px';
+            frag.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            frag.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+            frag.style.animation = `fall 1.5s ease forwards`;
+            frag.style.animationDelay = `${Math.random() * 0.3}s`;
+            document.body.appendChild(frag);
+            fragments.push(frag);
+          }
+        }
+        setTimeout(() => window.location.href = 'next.html', 1700);
+      }
+    };
+
+    // Get effect keys
+    const effectKeys = Object.keys(effects);
+
+    // Event listener for effect selection and click
+    box.addEventListener('click', () => {
+      // Shuffle logic with localStorage
+      let shuffledEffects = JSON.parse(localStorage.getItem('shuffledEffects'));
+      let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
+
+      if (!shuffledEffects || currentIndex >= shuffledEffects.length) {
+        shuffledEffects = shuffle([...effectKeys]);
+        currentIndex = 0;
+        localStorage.setItem('shuffledEffects', JSON.stringify(shuffledEffects));
+      }
+
+      const selectedEffect = shuffledEffects[currentIndex];
+
+      // Update index for next time
+      currentIndex++;
+      localStorage.setItem('currentIndex', currentIndex);
+
+      // Remove previous effect class
+      box.classList.remove(...effectKeys.map(e => `effect-${e}`));
+
+      // Ensure transitions complete before shattering
+      setTimeout(() => {
+        effects[selectedEffect]();
+      }, 1000); // Wait for transition delay (0.5s) + some buffer
+    });
+
+    // Keyboard support for accessibility
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        box.click();
+      }
+    });
+  </script>
+</body>
+</html>
